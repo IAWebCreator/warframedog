@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WarframeDog - Meme Token</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    <script src="https://kit.fontawesome.com/your-fontawesome-kit.js" crossorigin="anonymous"></script>
+    <style>
+        :root {
+            --neon-blue: #00ffff;
+            --neon-pink: #ff00ff;
+            --neon-purple: #8a2be2;
+            --background: #121212;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--background);
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        #particles-js {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background: rgba(18, 18, 18, 0.8);
+            padding: 20px 0;
+            position: fixed;
+            width: 100%;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+
+        .logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2em;
+            color: var(--neon-blue);
+            text-shadow: 0 0 10px var(--neon-blue);
+        }
+
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        nav ul li {
+            display: inline;
+            margin-right: 20px;
+        }
+
+        nav ul li a {
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        nav ul li a:hover {
+            color: var(--neon-pink);
+        }
+
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-size: 4em;
+            margin-bottom: 20px;
+            font-family: 'Orbitron', sans-serif;
+            color: var(--neon-blue);
+            text-shadow: 0 0 20px var(--neon-blue);
+        }
+
+        .hero p {
+            font-size: 1.5em;
+            margin-bottom: 30px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: var(--neon-purple);
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            border: 2px solid var(--neon-purple);
+        }
+
+        .btn:hover {
+            background-color: transparent;
+            box-shadow: 0 0 20px var(--neon-purple);
+        }
+
+        .section {
+            padding: 100px 0;
+        }
+
+        .section h2 {
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            font-family: 'Orbitron', sans-serif;
+            color: var(--neon-pink);
+            text-shadow: 0 0 10px var(--neon-pink);
+        }
+
+        .tokenomics-list {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .tokenomics-list li {
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+
+        .roadmap-item {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .roadmap-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 255, 255, 0.3);
+        }
+
+        footer {
+            background: rgba(18, 18, 18, 0.8);
+            padding: 20px 0;
+            text-align: center;
+        }
+
+        .social-links a {
+            color: #ffffff;
+            font-size: 1.5em;
+            margin: 0 10px;
+            transition: color 0.3s ease;
+        }
+
+        .social-links a:hover {
+            color: var(--neon-blue);
+        }
+
+        #logo3d {
+            width: 300px;
+            height: 300px;
+        }
+
+        @keyframes neonGlow {
+            0% {
+                text-shadow: 0 0 10px var(--neon-blue), 0 0 20px var(--neon-blue), 0 0 30px var(--neon-blue);
+            }
+            50% {
+                text-shadow: 0 0 20px var(--neon-pink), 0 0 30px var(--neon-pink), 0 0 40px var(--neon-pink);
+            }
+            100% {
+                text-shadow: 0 0 10px var(--neon-blue), 0 0 20px var(--neon-blue), 0 0 30px var(--neon-blue);
+            }
+        }
+
+        .neon-text {
+            animation: neonGlow 2s infinite alternate;
+        }
+    </style>
+</head>
+<body>
+    <div id="particles-js"></div>
+
+    <header>
+        <div class="container">
+            <nav>
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#tokenomics">Tokenomics</a></li>
+                    <li><a href="#how-to-buy">How to Buy</a></li>
+                    <li><a href="#roadmap">Roadmap</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1 class="neon-text">WarframeDog</h1>
+            <p>Picture a pooch in power armor mistaking virtual reality for the dog park!</p>
+            <a href="#about" class="btn">Learn More</a>
+        </div>
+        <div id="logo3d"></div>
+    </section>
+
+    <section id="about" class="section">
+        <div class="container">
+            <h2>About WarframeDog</h2>
+            <p>Imagine a playful dog wearing futuristic power armor, mistaking its virtual reality headset for a trip to the dog park. WarframeDog blends gaming charm with loyal pet antics in a cyber-powered adventure!</p>
+        </div>
+    </section>
+
+    <section id="tokenomics" class="section">
+        <div class="container">
+            <h2>TOKENOMICS</h2>
+            <ul class="tokenomics-list">
+                <li>Total Supply: 1,000,000,000 WFD</li>
+                <li>Liquidity Pool: 50% locked for 1 year</li>
+                <li>Community Rewards: 20% for loyal WFD holders</li>
+                <li>Development Fund: 30% for future cyber-pawsome features</li>
+            </ul>
+            <img src="./logo.png" alt="WarframeDog logo" style="max-width: 200px; margin-top: 20px;">
+        </div>
+    </section>
+
+    <section id="how-to-buy" class="section">
+        <div class="container">
+            <h2>HOW TO BUY</h2>
+            <p>Step 1: Get a Wallet - Download a reputable Ethereum wallet like MetaMask or Trust Wallet.</p>
+            <p>Step 2: Acquire ETH - Purchase Ethereum (ETH) from a cryptocurrency exchange like Coinbase or Binance.</p>
+            <p>Step 3: Connect to a DEX - Connect your wallet to a decentralized exchange (DEX) like Uniswap or SushiSwap.</p>
+            <p>Step 4: Swap ETH for WFD - Use the DEX's swap feature to exchange your ETH for WarframeDog tokens.</p>
+        </div>
+    </section>
+
+    <section id="roadmap" class="section">
+        <div class="container">
+            <h2>ROADMAP</h2>
+            <div class="roadmap-item">
+                <h3>Phase 1: Launch & Community Building</h3>
+                <p>We'll launch WarframeDog and focus on growing a strong community of cyber-pooches!</p>
+            </div>
+            <div class="roadmap-item">
+                <h3>Phase 2: Virtual Reality Dog Park</h3>
+                <p>Develop a VR dog park where WarframeDog holders can play and interact in the metaverse.</p>
+            </div>
+            <div class="roadmap-item">
+                <h3>Phase 3: Power Armor Upgrades</h3>
+                <p>Introduce customizable power armor skins for your virtual WarframeDog companion.</p>
+            </div>
+            <div class="roadmap-item">
+                <h3>Phase 4: Cross-Chain Fetch</h3>
+                <p>Expand WarframeDog's presence to other blockchains for maximum cyber-fetch capabilities!</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>WarframeDog Contract Address: <span id="contract-address">0x1234...5678</span> <i class="fas fa-copy" id="copy-address"></i></p>
+            <div class="social-links">
+                <a href="#" target="_blank"><i class="fab fa-youtube"></i></a>
+                <a href="#" target="_blank"><i class="fab fa-tiktok"></i></a>
+                <a href="#" target="_blank"><i class="fab fa-instagram"></i></a>
+                <a href="#" target="_blank"><i class="fab fa-facebook"></i></a>
+                <a href="#" target="_blank"><i class="fab fa-twitter"></i></a>
+                <a href="#" target="_blank"><i class="fas fa-chart-line"></i></a>
+                <a href="#" target="_blank"><i class="fab fa-telegram"></i></a>
+                <a href="#" target="_blank"><i class="fas fa-search-dollar"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <script type="text/babel">
+        // React component for 3D logo
+        const Logo3D = () => {
+            React.useEffect(() => {
+                const scene = new THREE.Scene();
+                const camera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);
+                const renderer = new THREE.WebGLRenderer({ alpha: true });
+                renderer.setSize(300, 300);
+                document.getElementById('logo3d').appendChild(renderer.domElement);
+
+                const geometry = new THREE.BoxGeometry();
+                const material = new THREE.MeshBasicMaterial({ color: 0x00ffff, wireframe: true });
+                const cube = new THREE.Mesh(geometry, material);
+                scene.add(cube);
+
+                camera.position.z = 5;
+
+                const animate = () => {
+                    requestAnimationFrame(animate);
+                    cube.rotation.x += 0.01;
+                    cube.rotation.y += 0.01;
+                    renderer.render(scene, camera);
+                };
+
+                animate();
+            }, []);
+
+            return <div id="logo3d"></div>;
+        };
+
+        ReactDOM.render(<Logo3D />, document.getElementById('logo3d'));
+    </script>
+
+    <script>
+        // Particles.js configuration
+        particlesJS('particles-js', {
+            particles: {
+                number: { value: 80, density: { enable: true, value_area: 800 } },
+                color: { value: "#ffffff" },
+                shape: { type: "circle" },
+                opacity: { value: 0.5, random: false },
+                size: { value: 3, random: true },
+                line_linked: { enable: true, distance: 150, color: "#ffffff", opacity: 0.4, width: 1 },
+                move: { enable: true, speed: 6, direction: "none", random: false, straight: false, out_mode: "out", bounce: false }
+            },
+            interactivity: {
+                detect_on: "canvas",
+                events: { onhover: { enable: true, mode: "repulse" }, onclick: { enable: true, mode: "push" }, resize: true },
+                modes: { grab: { distance: 400, line_linked: { opacity: 1 } }, bubble: { distance: 400, size: 40, duration: 2, opacity: 8, speed: 3 }, repulse: { distance: 200, duration: 0.4 }, push: { particles_nb: 4 }, remove: { particles_nb: 2 } }
+            },
+            retina_detect: true
+        });
+
+        // GSAP animations
+        gsap.registerPlugin(ScrollTrigger);
+
+        gsap.from('.hero h1', { duration: 1, y: 50, opacity: 0, ease: 'power3.out' });
+        gsap.from('.hero p', { duration: 1, y: 50, opacity: 0, ease: 'power3.out', delay: 0.3 });
+        gsap.from('.hero .btn', { duration: 1, y: 50, opacity: 0, ease: 'power3.out', delay: 0.6 });
+
+        gsap.utils.toArray('.section').forEach(section => {
+            gsap.from(section, {
+                scrollTrigger: {
+                    trigger: section,
+                    start: 'top 80%',
+                    end: 'bottom 20%',
+                    toggleActions: 'play none none reverse'
+                },
+                opacity: 0,
+                y: 50,
+                duration:
